@@ -1,33 +1,32 @@
+/// <reference types= "cypress" />
+const data=require('../fixtures/data.json')
+import Login from '../pageObjects/Login';
+
+const username = data.Login.username;
+const password = data.Login.password;
+const invalidUsername = data.Login.invalidUsername;
+const invalidPassword = data.Login.invalidPassword;
 describe('Login Page', () => {
 
 beforeEach(() => {
 
-cy.visit('https://phptravels.net/login')
+  Login.visit(); // Navigate to the login page before each test
 
 })
-  it('valid ID and Password', () => {
-
-    cy.get('form > :nth-child(1) > .form-group > .form-control').click({force: true})
-    .type ('agent@phptravels.com')
-
-    cy.get(':nth-child(2) > .form-group > .form-control').click({force: true})
-    .type('demoagent')
-
-    cy.get('.btn-box > .btn-default').click({force: true})
-    cy.get('.breadcrumb-content > .section-heading > .sec__title').should ('be.visible')
-    cy.get('#cookie_stop').click()
+it('should successfully log in', () => {
+  Login.fillUsername().type(username); // Enter the username;
+  Login.fillPassword().type (password); // Enter the password
+  Login.submit();
+  Login.verifyLogin();// Add assertions
+  cy.get('#cookie_stop').click()
   })
   it('invalid ID and Password', () => {
 
-      cy.get('form > :nth-child(1) > .form-group > .form-control').click({force: true})
-      .type ('agent@phptravels.com')
-
-      cy.get(':nth-child(2) > .form-group > .form-control').click({force: true})
-      .type('realagent')
-
-      cy.get('.btn-box > .btn-default').click({force: true})
-    cy.get('.message > .alert-danger').should('contain', 'Wrong credentials. try again!')
-      cy.url().should('contain','https://phptravels.net/login/failed')
+    Login.fillUsername().type(invalidUsername); // Enter the invalidusername;
+    Login.fillPassword().type (invalidPassword); // Enter the invalidpassword
+    Login.submit();
+   Login.incorrect();
+     
     })
 
 })

@@ -1,0 +1,11 @@
+
+ {
+  "Login":{
+  "username": "admin@phptravels.com",
+  "password": "demoadmin",
+  "invalidUsername":"agent@phptravels.com",
+  "invalidPassword":"demoagent"
+  
+}
+ }
+
